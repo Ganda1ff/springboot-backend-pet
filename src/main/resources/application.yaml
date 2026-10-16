@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: music
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/music_catalogue
+    username: postgres
+    password: postgres
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+
+  sql:
+    init:
+      mode: never
