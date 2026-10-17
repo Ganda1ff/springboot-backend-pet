@@ -13,7 +13,7 @@ public class Album extends BaseEntity {
     @Column(name="release_date", nullable = false)
     private LocalDate releaseDate;
 
-    @ManyToOne(fetch = FetchType.LAZY) 
+    @ManyToOne(fetch = FetchType.EAGER) 
     @JoinColumn(name="artist_id")
     private Artist artist;
 
