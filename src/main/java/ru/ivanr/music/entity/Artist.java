@@ -2,7 +2,11 @@ package ru.ivanr.music.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
+//import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import java.util.HashSet;
 
 @Entity
 @Table(name="artists")
@@ -16,6 +20,10 @@ public class Artist extends BaseEntity {
 
     @Column(name="birth_country", nullable = false)
     private String birthCountry;
+
+    //@JsonIgnore
+    @OneToMany(mappedBy="artist", fetch = FetchType.LAZY)
+    private Set<Album> albums = new HashSet<>();
 
     public Artist() {
 
@@ -50,4 +58,14 @@ public class Artist extends BaseEntity {
     public void setBirthCountry(String birthCountry) {
         this.birthCountry = birthCountry;
     }
+
+    public Set<Album> getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(Set<Album> albums) {
+        this.albums = albums;
+    }
+
+
 }

@@ -2,6 +2,9 @@ package ru.ivanr.music.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
+
+import java.util.HashSet;
 
 @Entity 
 @Table(name="albums")
@@ -13,9 +16,12 @@ public class Album extends BaseEntity {
     @Column(name="release_date", nullable = false)
     private LocalDate releaseDate;
 
-    @ManyToOne(fetch = FetchType.EAGER) 
+    @ManyToOne(fetch = FetchType.LAZY) 
     @JoinColumn(name="artist_id")
     private Artist artist;
+
+    @OneToMany(mappedBy="album", fetch = FetchType.LAZY)
+    private Set<Track> tracks = new HashSet<>();
 
     public Album() {
 
@@ -50,5 +56,13 @@ public class Album extends BaseEntity {
 
     public void setArtist(Artist artist) {
         this.artist = artist;
+    }
+
+    public Set<Track> getTracks() {
+        return tracks;
+    }
+
+    public void setTracks(Set<Track> tracks) {
+        this.tracks = tracks;
     }
 }
