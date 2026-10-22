@@ -6,54 +6,77 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import ru.ivanr.music.mapper.ArtistMapper;
+import ru.ivanr.music.dto.ArtistDto;
+
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 @Service
 public class ArtistService {
     
     private final ArtistRepository artistRepository;
+    private final ArtistMapper mapper;
 
-    public ArtistService(ArtistRepository artistRepository) {
+    public ArtistService(ArtistRepository artistRepository, ArtistMapper mapper) {
         this.artistRepository = artistRepository;
+        this.mapper = mapper;
     }
 
-    public List<Artist> getAll() {
-        return artistRepository.findAll();
+    public List<ArtistDto> getAll() {
+        return artistRepository.findAll()
+            .stream()
+            .map(mapper::fromEntity)
+            .collect(Collectors.toList());  
     }
 
-    public Artist getById(Long id) {
+    public ArtistDto getById(Long id) {
         if (id == null) {
             throw new RuntimeException("Id is null");
         }
 
         Artist artist = artistRepository.findById(id);
 
-        return artist;
-    }
-
-    public Artist create(Artist artist) {
-
         if (artist == null) {
-            throw new RuntimeException("artist is null");
-        }
-
-        Artist newArtist = artistRepository.save(artist);
-        
-        return newArtist;
-
-    }
-
-    public Artist update(Long id, Artist artist) {
-
-        Artist newArtist = artistRepository.findById(id);
-
-        if (newArtist == null) {
             throw new RuntimeException("Artist is null");
         }
 
-        newArtist.setName(artist.getName());
-        newArtist.setBirthDate(artist.getBirthDate());
-        newArtist.setBirthCountry(artist.getBirthCountry());
+        return mapper.fromEntity(artist);
+    }
 
-        return artistRepository.save(newArtist);
+    public ArtistDto create(ArtistDto dto) {
+
+        if (dto == null) {
+            throw new RuntimeException("artist dto is null");
+        }
+
+        Artist artist = mapper.toEntity(dto);
+
+        Artist saveArtist = artistRepository.save(artist);
+        
+        return mapper.fromEntity(saveArtist);
+
+    }
+
+    public ArtistDto update(Long id, ArtistDto dto) {
+
+        if (id == null) {
+            throw new RuntimeException("Id is null");
+        }
+        
+        Artist artist = artistRepository.findById(id);
+
+        if (artist == null) {
+            throw new RuntimeException("Artist is null");
+        }
+
+        artist.setName(dto.getName());
+        artist.setBirthDate(dto.getBirthDate());
+        artist.setBirthCountry(dto.getBirthCountry());
+
+        Artist updateArtist = artistRepository.save(artist);
+
+        return mapper.fromEntity(updateArtist);
     }
 
     public void delete(Long id) {

@@ -3,9 +3,6 @@ package ru.ivanr.music.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.util.Set;
-
-//import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import java.util.HashSet;
 
 @Entity
@@ -22,7 +19,7 @@ public class Artist extends BaseEntity {
     private String birthCountry;
 
     //@JsonIgnore
-    @OneToMany(mappedBy="artist", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="artist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Album> albums = new HashSet<>();
 
     public Artist() {

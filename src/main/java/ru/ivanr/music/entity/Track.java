@@ -18,7 +18,7 @@ public class Track extends BaseEntity {
     @JoinColumn(name="album_id")
     private Album album;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name="genres_tracks",
         joinColumns = @JoinColumn(name = "track_id"),

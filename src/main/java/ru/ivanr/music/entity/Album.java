@@ -20,7 +20,7 @@ public class Album extends BaseEntity {
     @JoinColumn(name="artist_id")
     private Artist artist;
 
-    @OneToMany(mappedBy="album", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="album", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Track> tracks = new HashSet<>();
 
     public Album() {
