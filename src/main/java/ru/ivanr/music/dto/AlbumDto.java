@@ -18,8 +18,7 @@ public class AlbumDto {
 
     @NotNull
     Long artistId;
-
-    @NotBlank 
+ 
     String artistName;
 
     public AlbumDto() { }
