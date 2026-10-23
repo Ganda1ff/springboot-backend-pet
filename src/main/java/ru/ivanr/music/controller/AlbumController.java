@@ -2,9 +2,9 @@ package ru.ivanr.music.controller;
 
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
-import java.util.Optional;
-import ru.ivanr.music.entity.Album;
 import ru.ivanr.music.service.AlbumService;
+import jakarta.validation.Valid;
+import ru.ivanr.music.dto.*;
 
 @RestController 
 @RequestMapping(BaseUrl.API + AlbumController.URL)
@@ -18,23 +18,23 @@ public class AlbumController {
     }
 
     @GetMapping 
-    public List<Album> getAll() {
+    public List<AlbumDto> getAll() {
         return albumService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Album> getById(@PathVariable Long id) {
+    public AlbumDto getById(@PathVariable Long id) {
         return albumService.getById(id);
     }
 
     @PostMapping
-    public Album create(@RequestBody Album album) {
-        return albumService.create(album);
+    public AlbumDto create(@Valid @RequestBody AlbumDto dto) {
+        return albumService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public Album update(@RequestBody Album album, @PathVariable Long id) {
-        return albumService.update(id, album);
+    public AlbumDto update(@Valid @RequestBody AlbumDto dto, @PathVariable Long id) {
+        return albumService.update(id, dto);
     }
 
     @DeleteMapping("/{id}")
@@ -43,7 +43,4 @@ public class AlbumController {
 
         return "Album with id: " + id + "was deleted";
     }
-
-
-
 }

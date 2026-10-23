@@ -3,7 +3,6 @@ package ru.ivanr.music.dto;
 import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
-
 public class ArtistDto {
     Long id;
 

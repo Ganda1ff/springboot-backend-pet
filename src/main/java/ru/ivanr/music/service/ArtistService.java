@@ -10,7 +10,6 @@ import ru.ivanr.music.mapper.ArtistMapper;
 import ru.ivanr.music.dto.ArtistDto;
 
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ArtistService {
@@ -52,9 +51,9 @@ public class ArtistService {
 
         Artist artist = mapper.toEntity(dto);
 
-        Artist saveArtist = artistRepository.save(artist);
+        Artist savedArtist = artistRepository.save(artist);
         
-        return mapper.fromEntity(saveArtist);
+        return mapper.fromEntity(savedArtist);
 
     }
 
@@ -63,7 +62,7 @@ public class ArtistService {
         if (id == null) {
             throw new RuntimeException("Id is null");
         }
-        
+
         Artist artist = artistRepository.findById(id);
 
         if (artist == null) {
@@ -74,9 +73,9 @@ public class ArtistService {
         artist.setBirthDate(dto.getBirthDate());
         artist.setBirthCountry(dto.getBirthCountry());
 
-        Artist updateArtist = artistRepository.save(artist);
+        Artist updatedArtist = artistRepository.save(artist);
 
-        return mapper.fromEntity(updateArtist);
+        return mapper.fromEntity(updatedArtist);
     }
 
     public void delete(Long id) {
