@@ -1,48 +1,66 @@
 package ru.ivanr.music.service;
 
 import ru.ivanr.music.repository.GenreRepository;
+import ru.ivanr.music.dto.GenreDto;
 import ru.ivanr.music.entity.Genre;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import ru.ivanr.music.mapper.GenreMapper;
 
 @Service
 public class GenreService {
     private final GenreRepository genreRepository;
 
-    public GenreService(GenreRepository genreRepository) {
+    private final GenreMapper mapper;
+
+
+    public GenreService(GenreRepository genreRepository, GenreMapper mapper) {
         this.genreRepository = genreRepository;
+        this.mapper = mapper;
     }
 
-    public List<Genre> getAll() {
-        return genreRepository.findAll();
+    public List<GenreDto> getAll() {
+        return genreRepository.findAll()
+            .stream()
+            .map(mapper::fromEntity)
+            .toList();
     }
 
-    public Genre getById(Long id) {
+    public GenreDto getById(Long id) {
         if (id == null) {
             throw new RuntimeException("Id is null");
         }
 
-        return genreRepository.findById(id)
+        Genre genre = genreRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Genre not found"));
+
+        return mapper.fromEntity(genre);
     }
 
-    public Genre create(Genre genre) {
-        if (genre == null) {
+    public GenreDto create(GenreDto dto) {
+        if (dto == null) {
             throw new RuntimeException("Genre doesnt exist");
         }
 
-        return genreRepository.save(genre);
+        Genre genre = mapper.toEntity(dto);
+
+        Genre createdGenre = genreRepository.save(genre);
+
+        return mapper.fromEntity(createdGenre);
     }
 
-    public Genre update(Genre genre, Long id) {
+    public GenreDto update(GenreDto dto, Long id) {
         if (id == null) throw new RuntimeException("Id is null");
-        if (genre == null) throw new RuntimeException("Genre is null");
-
-        Genre updatedGenre = genreRepository.findById(id)
+        if (dto == null) throw new RuntimeException("Genre is null");
+        
+        Genre genre = genreRepository.findById(id)
         .orElseThrow(() -> new RuntimeException("Genre no found"));
+   
+        genre.setName(dto.getName());
 
-        updatedGenre.setName(genre.getName());
-        return genreRepository.save(updatedGenre);
+        Genre updatedGenre = genreRepository.save(genre);
+
+        return mapper.fromEntity(updatedGenre);
     }
 
     public void deleteById(Long id) {

@@ -3,7 +3,8 @@ package ru.ivanr.music.controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import ru.ivanr.music.service.GenreService;
-import ru.ivanr.music.entity.Genre;
+import ru.ivanr.music.dto.GenreDto;
+import jakarta.validation.Valid;
 
 @RestController 
 @RequestMapping(BaseUrl.API + GenreController.URL)
@@ -17,23 +18,23 @@ public class GenreController {
     }
 
     @GetMapping 
-    public List<Genre> getAll() {
+    public List<GenreDto> getAll() {
         return genreService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Genre getById(@PathVariable Long id) {
+    public GenreDto getById(@PathVariable Long id) {
         return genreService.getById(id);
     }
 
     @PostMapping
-    public Genre create(@RequestBody Genre genre) {
-        return genreService.create(genre);
+    public GenreDto create(@Valid @RequestBody GenreDto dto) {
+        return genreService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public Genre update(@RequestBody Genre genre, @PathVariable Long id) {
-        return genreService.update(genre, id);
+    public GenreDto update(@Valid @RequestBody GenreDto dto, @PathVariable Long id) {
+        return genreService.update(dto, id);
     }
 
     @DeleteMapping("/{id}")

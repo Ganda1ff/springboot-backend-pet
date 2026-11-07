@@ -2,9 +2,10 @@ package ru.ivanr.music.controller;
 
 import org.springframework.web.bind.annotation.*;
 import ru.ivanr.music.service.TrackService;
-import ru.ivanr.music.entity.Track;
+import ru.ivanr.music.dto.TrackDto;
 import java.util.List;
-import java.util.Optional;
+import jakarta.validation.Valid;
+
 
 @RestController 
 @RequestMapping(BaseUrl.API + TrackController.URL)
@@ -18,23 +19,23 @@ public class TrackController {
     }
 
     @GetMapping 
-    public List<Track> getAll() {
+    public List<TrackDto> getAll() {
         return trackService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Optional<Track> getById(@PathVariable Long id) {
+    public TrackDto getById(@PathVariable Long id) {
         return trackService.getById(id);
     }
 
     @PostMapping 
-    public Track create(@RequestBody Track track) {
-        return trackService.create(track);
+    public TrackDto create(@Valid @RequestBody TrackDto dto) {
+        return trackService.create(dto);
     }
 
     @PutMapping("/{id}")
-    public Track update(@PathVariable Long id, @RequestBody Track track) {
-        return trackService.update(track, id);
+    public TrackDto update(@PathVariable Long id, @Valid @RequestBody TrackDto dto) {
+        return trackService.update(dto, id);
     }
 
     @DeleteMapping("/{id}")
